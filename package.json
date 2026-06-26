@@ -1,0 +1,19 @@
+{
+  "name": "plankton-project",
+  "private": false,
+  "author": {
+    "name": "Big Pixel Community CIC",
+    "url": "https://bigpixel.org.uk",
+    "email": "hello@bigpixel.org.uk"
+  },
+  "license": "AGPL-3.0-only",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint"
+  },
+  "devDependencies": {
+    "turbo": "^2"
+  },
+  "packageManager": "pnpm@11.9.0"
+}
