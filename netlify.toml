@@ -1,0 +1,17 @@
+# example netlify.toml
+[build]
+  command = "pnpm turbo build --filter @plankton/frontend"
+  publish = "apps/frontend/.next"
+
+[build.environment]
+  NODE_VERSION = "22"
+  PNPM_VERSION = "11.9.0"
+
+[dev]
+  command = "pnpm --filter @plankton/frontend dev"
+  port = 3000
+  targetPort = 3000
+  framework = "#custom"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
