@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
+const monorepoRoot = path.resolve(dirname, '../..')
 
 const nextConfig: NextConfig = {
   images: {
@@ -24,8 +25,9 @@ const nextConfig: NextConfig = {
     return webpackConfig
   },
   turbopack: {
-    root: path.resolve(dirname),
+    root: monorepoRoot,
   },
+  outputFileTracingRoot: monorepoRoot,
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })

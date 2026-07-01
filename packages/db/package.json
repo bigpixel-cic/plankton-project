@@ -11,6 +11,7 @@
   "scripts": {
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
+    "db:migrate:netlify": "netlify database migrations apply --filter @plankton/frontend",
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {

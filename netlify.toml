@@ -9,9 +9,10 @@
 
 [dev]
   command = "pnpm --filter @plankton/frontend dev"
-  port = 3000
+  port = 8888
   targetPort = 3000
   framework = "#custom"
+  autoLaunch = false
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
