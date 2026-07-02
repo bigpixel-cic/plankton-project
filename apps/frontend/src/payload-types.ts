@@ -69,6 +69,9 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    'social-media-accounts': SocialMediaAccount;
+    supporters: Supporter;
+    trustees: Trustee;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +81,9 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    'social-media-accounts': SocialMediaAccountsSelect<false> | SocialMediaAccountsSelect<true>;
+    supporters: SupportersSelect<false> | SupportersSelect<true>;
+    trustees: TrusteesSelect<false> | TrusteesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -87,8 +93,14 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    home: Home;
+    about: About;
+  };
+  globalsSelect: {
+    home: HomeSelect<false> | HomeSelect<true>;
+    about: AboutSelect<false> | AboutSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -148,7 +160,10 @@ export interface User {
  */
 export interface Media {
   id: number;
-  alt: string;
+  /**
+   * Required for images (accessibility/SEO). Optional for non-image files like animations or documents.
+   */
+  alt?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -160,6 +175,46 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "social-media-accounts".
+ */
+export interface SocialMediaAccount {
+  id: number;
+  platform: 'bluesky' | 'facebook' | 'twitter' | 'instagram' | 'linkedin' | 'youtube';
+  link?: string | null;
+  icon: number | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "supporters".
+ */
+export interface Supporter {
+  id: number;
+  name: string;
+  /**
+   * Optional link to the supporter's website.
+   */
+  website?: string | null;
+  logo?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "trustees".
+ */
+export interface Trustee {
+  id: number;
+  name: string;
+  position?: string | null;
+  portrait?: (number | null) | Media;
+  bio?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -192,6 +247,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'social-media-accounts';
+        value: number | SocialMediaAccount;
+      } | null)
+    | ({
+        relationTo: 'supporters';
+        value: number | Supporter;
+      } | null)
+    | ({
+        relationTo: 'trustees';
+        value: number | Trustee;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -277,6 +344,40 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "social-media-accounts_select".
+ */
+export interface SocialMediaAccountsSelect<T extends boolean = true> {
+  platform?: T;
+  link?: T;
+  icon?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "supporters_select".
+ */
+export interface SupportersSelect<T extends boolean = true> {
+  name?: T;
+  website?: T;
+  logo?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "trustees_select".
+ */
+export interface TrusteesSelect<T extends boolean = true> {
+  name?: T;
+  position?: T;
+  portrait?: T;
+  bio?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -314,6 +415,97 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * Content shown on the homepage.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home".
+ */
+export interface Home {
+  id: number;
+  heading: string;
+  subheading?: string | null;
+  /**
+   * Optional — the interactive Rive animation shown on the homepage hero. Leave blank if not using one.
+   */
+  animation?: {
+    title?: string | null;
+    /**
+     * The Rive state machine name, e.g. "State Machine 1".
+     */
+    stateMachine?: string | null;
+    riveFile?: (number | null) | Media;
+  };
+  /**
+   * Heading shown above the supporter logos section.
+   */
+  supporterHeading?: string | null;
+  supporters?: (number | Supporter)[] | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about".
+ */
+export interface About {
+  id: number;
+  heading: string;
+  subheading?: string | null;
+  mainImage?: (number | null) | Media;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  trustees?: (number | Trustee)[] | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home_select".
+ */
+export interface HomeSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  animation?:
+    | T
+    | {
+        title?: T;
+        stateMachine?: T;
+        riveFile?: T;
+      };
+  supporterHeading?: T;
+  supporters?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about_select".
+ */
+export interface AboutSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  mainImage?: T;
+  content?: T;
+  trustees?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

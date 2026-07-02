@@ -1,5 +1,3 @@
-// apps/frontend/src/payload.config.ts
-
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { s3Storage } from '@payloadcms/storage-s3'
@@ -8,8 +6,8 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
-import { Media } from './collections/Media'
-import { Users } from './collections/Users'
+import { Media, SocialMediaAccounts, Supporters, Trustees, Users } from './collections'
+import { About, Contact, Footer, Home, Navigation } from './globals'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -21,7 +19,8 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: [Users, Media, SocialMediaAccounts, Supporters, Trustees],
+  globals: [Home, About, Contact, Navigation, Footer],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
