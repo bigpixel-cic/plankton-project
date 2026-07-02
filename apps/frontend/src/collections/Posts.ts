@@ -2,7 +2,7 @@ import { BlocksFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import type { CollectionConfig } from 'payload'
 import { slugField } from 'payload'
 
-import { YouTubeVideo } from '../blocks/YouTubeVideo'
+import { Footnote, YouTubeVideo } from '../blocks'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -22,7 +22,7 @@ export const Posts: CollectionConfig = {
       editor: lexicalEditor({
         features: ({ defaultFeatures }) => [
           ...defaultFeatures,
-          BlocksFeature({ inlineBlocks: [YouTubeVideo] }),
+          BlocksFeature({ inlineBlocks: [YouTubeVideo, Footnote] }),
         ],
       }),
     },

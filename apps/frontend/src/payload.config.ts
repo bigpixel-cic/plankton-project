@@ -1,4 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { seoPlugin } from '@payloadcms/plugin-seo'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { s3Storage } from '@payloadcms/storage-s3'
 import path from 'path'
@@ -69,6 +70,14 @@ export default buildConfig({
         endpoint: `https://${process.env.R2_ENDPOINT}`,
         region: 'auto',
       },
+    }),
+    seoPlugin({
+      collections: ['posts', 'pages'],
+      globals: ['home', 'about', 'contact', 'blog-page', 'resources-page'],
+      uploadsCollection: 'media',
+      tabbedUI: true,
+      generateTitle: ({ doc }) => `The Plankton Project — ${doc?.title ?? doc?.heading ?? ''}`,
+      generateDescription: ({ doc }) => doc?.excerpt ?? doc?.subheading ?? '',
     }),
   ],
 })

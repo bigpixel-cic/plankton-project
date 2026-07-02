@@ -5,33 +5,19 @@ export const About: GlobalConfig = {
   slug: 'about',
   label: 'About Page',
   fields: [
+    { name: 'heading', type: 'text', required: true },
+    { name: 'subheading', type: 'text' },
+    { name: 'mainImage', type: 'upload', relationTo: 'media' },
     {
-      type: 'tabs',
-      tabs: [
-        {
-          label: 'Content',
-          fields: [
-            { name: 'heading', type: 'text', required: true },
-            { name: 'subheading', type: 'text' },
-            { name: 'mainImage', type: 'upload', relationTo: 'media' },
-            {
-              name: 'content',
-              type: 'richText',
-              editor: lexicalEditor(),
-            },
-            {
-              name: 'trustees',
-              type: 'relationship',
-              relationTo: 'trustees',
-              hasMany: true,
-            },
-          ],
-        },
-        {
-          label: 'SEO',
-          fields: [],
-        },
-      ],
+      name: 'content',
+      type: 'richText',
+      editor: lexicalEditor(),
+    },
+    {
+      name: 'trustees',
+      type: 'relationship',
+      relationTo: 'trustees',
+      hasMany: true,
     },
   ],
 }
