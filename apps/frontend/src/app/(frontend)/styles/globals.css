@@ -1,0 +1,76 @@
+@import 'tailwindcss';
+@import "@c15t/nextjs/styles.css";
+@plugin '@tailwindcss/typography';
+
+:root {
+  --background: var(--color-teal-600);
+  --foreground: var(--color-teal-50);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-headline: var(--font-nunito);
+}
+
+.dark {
+  --background: var(--color-teal-950);
+  --foreground: var(--color-teal-50);
+}
+
+body {
+  @apply bg-background text-foreground;
+  font-family: var(--font-sans);
+}
+
+@utility prose-white {
+  --tw-prose-body: var(--color-white);
+  --tw-prose-headings: var(--color-white);
+  --tw-prose-lead: var(--color-white);
+  --tw-prose-links: var(--color-white);
+  --tw-prose-bold: var(--color-white);
+  --tw-prose-counters: var(--color-white);
+  --tw-prose-bullets: var(--color-white);
+  --tw-prose-hr: var(--color-white);
+  --tw-prose-quotes: var(--color-white);
+  --tw-prose-quote-borders: var(--color-white);
+  --tw-prose-captions: var(--color-white);
+  --tw-prose-code: var(--color-white);
+  --tw-prose-pre-code: var(--color-white);
+  --tw-prose-pre-bg: var(--color-white);
+  --tw-prose-th-borders: var(--color-white);
+  --tw-prose-td-borders: var(--color-white);
+}
+
+.heading {
+  font-family: var(--font-nunito);
+  font-weight: var(--font-weight-extrabold);
+  color: var(--color-yellow-400);
+  font-size: var(--text-5xl);
+  line-height: var(--tw-leading, var(--text-5xl--line-height));
+  @media (min-width: 48rem) {
+    font-size: var(--text-7xl);
+    line-height: var(--tw-leading, var(--text-7xl--line-height));
+  }
+  @media (min-width: 64rem) {
+    font-size: var(--text-8xl);
+    line-height: var(--tw-leading, var(--text-8xl--line-height));
+  }
+}
+
+.subheading {
+  font-family: var(--font-nunito);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-teal-100);
+  font-size: var(--text-4xl);
+  line-height: var(--tw-leading, var(--text-4xl--line-height));
+  @media (min-width: 48rem) {
+    font-size: var(--text-6xl);
+    line-height: var(--tw-leading, var(--text-6xl--line-height));
+  }
+  @media (min-width: 64rem) {
+    font-size: var(--text-7xl);
+    line-height: var(--tw-leading, var(--text-7xl--line-height));
+  }
+}
