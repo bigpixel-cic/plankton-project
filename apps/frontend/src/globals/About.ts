@@ -1,5 +1,7 @@
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { BlocksFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import type { GlobalConfig } from 'payload'
+
+import { Footnote, YouTubeVideo } from '../blocks'
 
 export const About: GlobalConfig = {
   slug: 'about',
@@ -11,7 +13,12 @@ export const About: GlobalConfig = {
     {
       name: 'content',
       type: 'richText',
-      editor: lexicalEditor(),
+      editor: lexicalEditor({
+        features: ({ defaultFeatures }) => [
+          ...defaultFeatures,
+          BlocksFeature({ inlineBlocks: [YouTubeVideo, Footnote] }),
+        ],
+      }),
     },
     {
       name: 'trustees',

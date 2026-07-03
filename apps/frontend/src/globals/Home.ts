@@ -28,7 +28,9 @@ export const Home: GlobalConfig = {
           name: 'riveFile',
           type: 'upload',
           relationTo: 'media',
-          filterOptions: { mimeType: { contains: 'riv' } },
+          filterOptions: {
+            filename: { contains: '.riv' },
+          },
         },
       ],
     },

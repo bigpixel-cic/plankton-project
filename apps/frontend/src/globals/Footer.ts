@@ -14,6 +14,15 @@ export const Footer: GlobalConfig = {
       relationTo: 'social-media-accounts',
       hasMany: true,
     },
-    { name: 'navigation', type: 'array', fields: linkFields },
+    {
+      name: 'navigation',
+      type: 'array',
+      fields: linkFields,
+      admin: {
+        components: {
+          RowLabel: '@/components/payload/LinkRowLabel',
+        },
+      },
+    },
   ],
 }
