@@ -9,10 +9,9 @@ import { DesktopMenu, MobileMenu } from '@/components/global/navigation/nav-menu
 import { Menu, X } from 'lucide-react'
 
 import type { Navigation } from '@/payload-types'
+import type { NavMenuProps } from './nav-menu'
 
-type NavBarProps = { mainNav: Navigation | null }
-
-export default function NavBar({ mainNav }: NavBarProps) {
+export default function NavBar({ data }: { data: Navigation }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
@@ -44,7 +43,7 @@ export default function NavBar({ mainNav }: NavBarProps) {
             <Menu className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
-        <DesktopMenu mainNav={mainNav} />
+        <DesktopMenu mainNav={data.navigation as NavMenuProps[]} />
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           {/* <Link
             href="#"
@@ -77,7 +76,10 @@ export default function NavBar({ mainNav }: NavBarProps) {
               <X className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
-          <MobileMenu mainNav={mainNav} onClick={() => setMobileMenuOpen(false)} />
+          <MobileMenu
+            mainNav={data.navigation as NavMenuProps[]}
+            onClick={() => setMobileMenuOpen(false)}
+          />
           {/* <div className="py-6">
             <Link
               href="#"

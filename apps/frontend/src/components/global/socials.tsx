@@ -1,45 +1,47 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { FooterQueryResult, ContactQueryResult } from '@/sanity.types';
+import { isPopulated } from '@/app/lib/payload/utils'
+import Image from 'next/image'
+import Link from 'next/link'
 
-export function SmallSocials({
-  socialMedia,
-}: {
-  socialMedia: NonNullable<FooterQueryResult>['socialMedia'];
-}) {
+import type { SocialMediaAccount } from '@/payload-types'
+
+export function SmallSocials({ socialMedia }: { socialMedia: SocialMediaAccount[] }) {
   if (!socialMedia || socialMedia.length === 0) {
-    return null;
+    return null
   }
 
   return (
     <div className="inline-flex gap-4 my-4 lg:my-2">
       {socialMedia.map((account) => (
         <Link
-          key={account._id}
+          key={account.id}
           href={account.link || '#'}
           target="_blank"
           rel="noopener noreferrer"
           className="size-6"
         >
-          <Image
-            src={account.icon || '/social/default-icon.svg'}
-            alt={account.name || 'Social Media Account'}
-            width={24}
-            height={24}
-          />
+          {isPopulated(account.icon) ? (
+            <Image
+              src={account.icon.url || '/social/default-icon.svg'}
+              alt={account.platform || 'Social Media Account'}
+              width={24}
+              height={24}
+            />
+          ) : (
+            <p>{account.platform}</p>
+          )}
         </Link>
       ))}
     </div>
-  );
+  )
 }
 
 export function LargeSocials({
   socialMedia,
 }: {
-  socialMedia: NonNullable<ContactQueryResult>['socials'];
+  socialMedia: NonNullable<ContactQueryResult>['socials']
 }) {
   if (!socialMedia || socialMedia.length === 0) {
-    return null;
+    return null
   }
   return (
     <div className="inline-flex gap-9">
@@ -60,5 +62,5 @@ export function LargeSocials({
         </Link>
       ))}
     </div>
-  );
+  )
 }

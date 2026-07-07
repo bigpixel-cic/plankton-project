@@ -22,5 +22,16 @@ export async function getNavbarData() {
 
   return payload.findGlobal({
     slug: 'navigation',
+    depth: 1,
+    populate: {
+      pages: {
+        heading: true,
+        slug: true,
+      },
+      posts: {
+        title: true,
+        slug: true,
+      },
+    },
   })
 }
