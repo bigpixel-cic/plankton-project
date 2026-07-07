@@ -2,11 +2,11 @@
 import type { Media } from '@/payload-types'
 import { useRive, useViewModelInstanceBoolean } from '@rive-app/react-webgl2'
 
-type Animation =
+export type Animation =
   | {
       title?: string | null
       stateMachine?: string | null
-      riveFile?: Media | null
+      riveFile?: Media
     }
   | undefined
 

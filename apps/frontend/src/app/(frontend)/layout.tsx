@@ -1,3 +1,4 @@
+import { getFooterData, getNavbarData } from '@/app/(frontend)/queries'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import './styles/globals.css'
@@ -68,12 +69,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const { isEnabled: isDraftMode } = await draftMode()
-  const [{ data: mainNav }, { data: footerNav }, { data: footerData }] = await Promise.all([
-    sanityFetch({ query: navigationQuery }),
-    sanityFetch({ query: footerNavigationQuery }),
-    sanityFetch({ query: footerQuery }),
-  ])
+  const [navbarData, footerData] = await Promise.all([getNavbarData(), getFooterData()])
 
   return (
     <html lang="en">
@@ -83,17 +79,9 @@ export default async function RootLayout({
       <body className={`${inter.variable} ${nunito.variable} overflow-x-hidden`}>
         <ConsentManager>
           <div className="min-h-screen w-full flex flex-col">
-            <Toaster />
-            {isDraftMode && (
-              <>
-                <DraftModeToast />
-                <VisualEditing />
-              </>
-            )}
-            <SanityLive onError={handleError} />
-            <NavBar mainNav={mainNav} />
+            <NavBar data={navbarData} />
             {children}
-            <Footer footerNav={footerNav} footerData={footerData} />
+            <Footer data={footerData} />
           </div>
         </ConsentManager>
       </body>

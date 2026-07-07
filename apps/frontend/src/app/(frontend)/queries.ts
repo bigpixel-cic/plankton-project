@@ -8,3 +8,19 @@ export async function getHomeData() {
     slug: 'home',
   })
 }
+
+export async function getFooterData() {
+  const payload = await getPayload({ config })
+
+  return payload.findGlobal({
+    slug: 'footer',
+  })
+}
+
+export async function getNavbarData() {
+  const payload = await getPayload({ config })
+
+  return payload.findGlobal({
+    slug: 'navigation',
+  })
+}

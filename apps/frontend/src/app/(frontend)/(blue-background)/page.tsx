@@ -1,5 +1,7 @@
+import type { Animation } from '@/components/animations/home-animation'
 import HomeAnimation from '@/components/animations/home-animation'
 import Supporters from '@/components/home/supporters'
+import type { Supporter } from '@/payload-types'
 import { Suspense } from 'react'
 import { getHomeData } from '../queries'
 
@@ -31,7 +33,7 @@ export default async function Home() {
       <div className="relative size-96 md:size-135">
         {homeData.animation && (
           <Suspense>
-            <HomeAnimation animation={homeData.animation} />
+            <HomeAnimation animation={homeData.animation as Animation} />
           </Suspense>
         )}
       </div>
@@ -44,7 +46,7 @@ export default async function Home() {
       <h2 className="font-headline font-bold text-2xl md:text-3xl lg:text-4xl">
         {homeData.supporterHeading}
       </h2>
-      <Supporters supporters={homeData.supporters} />
+      <Supporters supporters={homeData.supporters as Supporter[]} />
     </div>
   )
 }

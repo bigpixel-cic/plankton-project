@@ -1,19 +1,19 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Dialog, DialogPanel } from '@headlessui/react';
+import { Dialog, DialogPanel } from '@headlessui/react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useState } from 'react'
 
-import { DesktopMenu, MobileMenu } from '@/components/global/navigation/nav-menu';
-import { Menu, X } from 'lucide-react';
+import { DesktopMenu, MobileMenu } from '@/components/global/navigation/nav-menu'
+import { Menu, X } from 'lucide-react'
 
-import type { NavigationQueryResult } from '@/sanity.types';
+import type { Navigation } from '@/payload-types'
 
-type NavBarProps = { mainNav: NavigationQueryResult | null };
+type NavBarProps = { mainNav: Navigation | null }
 
 export default function NavBar({ mainNav }: NavBarProps) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
     <header className="sticky top-0 z-50 bg-teal-600 dark:bg-teal-950 shadow-lg">
@@ -89,5 +89,5 @@ export default function NavBar({ mainNav }: NavBarProps) {
         </DialogPanel>
       </Dialog>
     </header>
-  );
+  )
 }
