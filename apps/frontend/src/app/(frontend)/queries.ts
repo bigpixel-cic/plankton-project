@@ -1,4 +1,5 @@
 import config from '@/payload.config'
+import { draftMode } from 'next/headers'
 import { getPayload } from 'payload'
 import { cache } from 'react'
 
@@ -74,4 +75,78 @@ export const getContactPage = cache(async () => {
     slug: 'contact',
     depth: 2,
   })
+})
+
+export const getBlogPage = cache(async () => {
+  const payload = await getPayload({ config })
+
+  return payload.findGlobal({
+    slug: 'blog-page',
+    depth: 2,
+    select: {
+      heading: true,
+      subheading: true,
+      featuredPost: true,
+    },
+    populate: {
+      posts: {
+        title: true,
+        slug: true,
+        coverImage: true,
+        excerpt: true,
+        tags: true,
+      },
+    },
+  })
+})
+
+export const getPosts = cache(async () => {
+  const payload = await getPayload({ config })
+
+  return payload.find({
+    collection: 'posts',
+    depth: 1,
+    limit: 12,
+  })
+})
+
+export const getPostSlugs = cache(async () => {
+  const payload = await getPayload({ config })
+
+  return payload.find({
+    collection: 'posts',
+    draft: false,
+    limit: 20,
+    overrideAccess: false,
+    pagination: false,
+    select: {
+      slug: true,
+    },
+  })
+})
+
+export const getPostBySlug = cache(async (slug: string) => {
+  const { isEnabled: draft } = await draftMode()
+  const payload = await getPayload({ config })
+
+  const result = await payload.find({
+    collection: 'posts',
+    draft,
+    limit: 1,
+    pagination: false,
+    overrideAccess: draft,
+    where: {
+      slug: {
+        equals: slug,
+      },
+    },
+    populate: {
+      users: {
+        firstName: true,
+        lastName: true,
+      },
+    },
+  })
+
+  return result.docs?.[0] || null
 })

@@ -1,18 +1,10 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { UserPen, CalendarDays, Tags, Share } from 'lucide-react';
-import { format } from 'date-fns';
+import { Post } from '@/payload-types'
+import { format } from 'date-fns'
+import { CalendarDays, Share, Tags, UserPen } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
 
-type InfoProps = {
-  title: string;
-  slug: string;
-  author: {
-    firstName: string | null;
-    lastName: string | null;
-  } | null;
-  date: string | null;
-  tags: string[] | null;
-};
+import { isPopulated } from '@/app/lib/payload/utils'
 
 const shareLinks = [
   {
@@ -39,48 +31,53 @@ const shareLinks = [
     iconDark: '/social/share-email-dark.svg',
     url: 'mailto:',
   },
-];
+]
 
 function shareUrl(id: string, title: string, slug: string) {
-  const postUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${slug}`;
+  const postUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${slug}`
   switch (id) {
     case 'bluesky':
-      return `https://bsky.app/intent/post?text=${encodeURIComponent(`${title}\n\nRead more at ${postUrl}`)}`;
+      return `https://bsky.app/intent/post?text=${encodeURIComponent(`${title}\n\nRead more at ${postUrl}`)}`
     case 'linkedin':
-      return `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(postUrl)}&title=${encodeURIComponent(title)}`;
+      return `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(postUrl)}&title=${encodeURIComponent(title)}`
     case 'facebook':
-      return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}`;
+      return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}`
     case 'email':
-      return `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(`Check out this article: ${postUrl}`)}`;
+      return `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(`Check out this article: ${postUrl}`)}`
     default:
-      return '#';
+      return '#'
   }
 }
 
-export default function InfoBlock({ title, slug, author, date, tags }: InfoProps) {
+export default function InfoBlock({ post }: { post: Post }) {
   return (
     <div className="relative md:sticky md:top-24 self-start w-full">
       <div className="flex flex-col divide-slate-300 divide-y">
         <p className="flex items-center gap-x-3 py-3 font-medium text-sm">
           <UserPen size={18} className="text-sky-600" />
-          {author ? `${author.firstName} ${author.lastName}` : 'Unknown Author'}
+          {isPopulated(post.author)
+            ? `${post.author.firstName} ${post.author.lastName}`
+            : 'Unknown Author'}
         </p>
         <p className="flex items-center gap-x-3 py-3 font-medium text-sm">
           <CalendarDays size={18} className="text-sky-600" />
-          {date ? format(new Date(date), 'do MMM yyyy') : 'Unknown Date'}
+          {post.createdAt ? format(new Date(post.createdAt), 'do MMM yyyy') : 'Unknown Date'}
         </p>
         <div className="flex items-center gap-x-3 py-3">
           <Tags size={18} className="text-sky-600" />
           <div className="flex flex-wrap gap-1">
-            {tags &&
-              tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="bg-pink-600 text-white text-xs/6 font-semibold px-3 rounded-full"
-                >
-                  {tag}
-                </span>
-              ))}
+            {post.tags &&
+              post.tags.map(
+                (tag) =>
+                  isPopulated(tag) && (
+                    <span
+                      key={tag.id}
+                      className="bg-pink-600 text-white text-xs/6 font-semibold px-3 rounded-full"
+                    >
+                      {tag.name}
+                    </span>
+                  ),
+              )}
           </div>
         </div>
         <div className="flex items-center gap-x-3 py-3">
@@ -89,7 +86,7 @@ export default function InfoBlock({ title, slug, author, date, tags }: InfoProps
             {shareLinks.map((link) => (
               <a
                 key={link.id}
-                href={shareUrl(link.id, title, slug)}
+                href={shareUrl(link.id, post.title, post.slug)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="size-5"
@@ -117,5 +114,5 @@ export default function InfoBlock({ title, slug, author, date, tags }: InfoProps
         </Link>
       </div>
     </div>
-  );
+  )
 }

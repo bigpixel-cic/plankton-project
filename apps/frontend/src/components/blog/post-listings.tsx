@@ -1,43 +1,40 @@
-import Image from "next/image";
-import Link from "next/link";
+import { getPosts } from '@/app/(frontend)/queries'
+import Image from 'next/image'
+import Link from 'next/link'
 
-import { resolveBlogListImage } from "@/sanity/utils";
+import { isPopulated } from '@/app/lib/payload/utils'
 
-import { allPostsQuery } from "@/sanity/queries";
-import { sanityFetch } from "@/sanity/live";
-import type { AllPostsQueryResult, Post } from "@/sanity.types";
+import { Post } from '@/payload-types'
 
-export async function PostListings({ featureId }: { featureId?: string }) {
-  const { data: posts }: { data: AllPostsQueryResult } = await sanityFetch({
-    query: allPostsQuery,
-  });
+export async function PostListings({ featuredPost }: { featuredPost?: Post }) {
+  const posts = await getPosts()
 
-  if (!posts || !posts.length) {
-    return null;
+  if (!posts || posts.totalDocs == 0) {
+    return null
   }
 
   return (
     <div className="bg-teal-100 dark:bg-black/30 rounded-2xl md:rounded-4xl p-9">
       <div className="flex flex-col divide-teal-900/30 divide-y">
-        {posts.map((post) =>
+        {posts.docs.map((post) =>
           // Exclude the featured post if it's in the list
-          post._id === featureId ? null : (
+          post.id === featuredPost?.id ? null : (
             <Link
-              key={post._id}
+              key={post.id}
               href={`/blog/${post.slug}`}
               className="py-9 first:pt-0 last:pb-0 flex flex-col md:flex-row items-center justify-around gap-9"
             >
               <div className="w-full aspect-square md:size-50 shrink-0 max-w-[320px]">
-                {resolveBlogListImage(post.coverImage) && (
+                {isPopulated(post.coverImage) && (
                   <Image
-                    src={resolveBlogListImage(post.coverImage)?.url || ""}
-                    alt={
-                      resolveBlogListImage(post.coverImage)?.alt ||
-                      "Cover image"
-                    }
+                    src={post.coverImage?.url || ''}
+                    alt={post.coverImage?.alt || 'Cover image'}
                     width={320}
                     height={320}
                     className="max-h-80 md:max-h-50 object-cover object-center rounded-xl"
+                    style={{
+                      objectPosition: `${post.coverImage.focalX ?? '50%'} ${post.coverImage.focalY ?? '50%'}`,
+                    }}
                   />
                 )}
               </div>
@@ -52,14 +49,17 @@ export async function PostListings({ featureId }: { featureId?: string }) {
                 )}
                 <div className="flex flex-wrap gap-1">
                   {post.tags &&
-                    post.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="bg-pink-600 text-white text-xs/6 font-semibold px-3 rounded-full"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+                    post.tags.map(
+                      (tag) =>
+                        isPopulated(tag) && (
+                          <span
+                            key={tag.id}
+                            className="bg-pink-600 text-white text-xs/6 font-semibold px-3 rounded-full"
+                          >
+                            {tag.name}
+                          </span>
+                        ),
+                    )}
                 </div>
               </div>
             </Link>
@@ -67,5 +67,5 @@ export async function PostListings({ featureId }: { featureId?: string }) {
         )}
       </div>
     </div>
-  );
+  )
 }
