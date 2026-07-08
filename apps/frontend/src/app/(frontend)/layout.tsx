@@ -1,4 +1,4 @@
-import { getFooterData, getNavbarData } from '@/app/(frontend)/queries'
+import { getFooter, getNavbar } from '@/app/(frontend)/queries'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import './styles/globals.css'
@@ -69,7 +69,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const [navbarData, footerData] = await Promise.all([getNavbarData(), getFooterData()])
+  const [navbar, footer] = await Promise.all([getNavbar(), getFooter()])
 
   return (
     <html lang="en">
@@ -79,9 +79,9 @@ export default async function RootLayout({
       <body className={`${inter.variable} ${nunito.variable} overflow-x-hidden`}>
         <ConsentManager>
           <div className="min-h-screen w-full flex flex-col">
-            <NavBar data={navbarData} />
+            <NavBar data={navbar} />
             {children}
-            <Footer data={footerData} />
+            <Footer data={footer} />
           </div>
         </ConsentManager>
       </body>

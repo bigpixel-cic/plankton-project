@@ -1,22 +1,21 @@
-import Link from 'next/link';
-import { FileDown } from 'lucide-react';
-
-import { resourceItemsQuery } from '@/sanity/queries';
-import { sanityFetch } from '@/sanity/live';
+import { getResources } from '@/app/(frontend)/queries'
+import { isPopulated } from '@/app/lib/payload/utils'
+import { FileDown } from 'lucide-react'
+import Link from 'next/link'
 
 export default async function ResourceList() {
-  const { data: resources } = await sanityFetch({ query: resourceItemsQuery });
+  const data = await getResources()
 
-  if (!resources || !resources.length) {
-    return <p>We will soon be adding some resources to this page.</p>;
+  if (!data || !data.docs.length) {
+    return <p>We will soon be adding some resources to this page.</p>
   }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {resources.map((resource) => (
+      {data.docs.map((resource) => (
         <Link
           key={resource.id}
-          href={resource.url || '#'}
+          href={(isPopulated(resource.file) && resource.file.url) || '#'}
           target="_blank"
           rel="noopener noreferrer"
           className="w-full bg-white/15 rounded-lg shadow-lg hover:shadow-sm hover:scale-95 hover:bg-white/10 transition-all"
@@ -29,5 +28,5 @@ export default async function ResourceList() {
         </Link>
       ))}
     </div>
-  );
+  )
 }

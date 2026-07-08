@@ -1,12 +1,12 @@
 import type { Metadata, ResolvingMetadata } from 'next'
 
-import { getAboutData } from '@/app/(frontend)/queries'
+import { getAboutPage } from '@/app/(frontend)/queries'
 import { isPopulated } from '@/app/lib/payload/utils'
 import RichText from '@/components/global/richtext'
 import Image from 'next/image'
 
 export async function generateMetadata(parent: ResolvingMetadata): Promise<Metadata> {
-  const about = await getAboutData()
+  const about = await getAboutPage()
 
   if (!about || !about.meta) {
     return {}
@@ -31,7 +31,7 @@ export async function generateMetadata(parent: ResolvingMetadata): Promise<Metad
 }
 
 export default async function About() {
-  const about = await getAboutData()
+  const about = await getAboutPage()
 
   if (!about) {
     return (
