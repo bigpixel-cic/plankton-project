@@ -2,7 +2,8 @@ import { FooterMenu } from '@/components/global/navigation/nav-menu'
 import { SmallSocials } from '@/components/global/socials'
 import Image from 'next/image'
 
-import type { Footer as FooterType } from '@/payload-types'
+import type { NavMenuProps } from '@/components/global/navigation/nav-menu'
+import type { Footer as FooterType, SocialMediaAccount } from '@/payload-types'
 
 export default function Footer({ data }: { data: FooterType }) {
   if (!data) return null
@@ -14,9 +15,9 @@ export default function Footer({ data }: { data: FooterType }) {
             <Image className="size-9" src="/brand/menu-icon.svg" alt="" width={36} height={36} />
             <p className="font-headline font-extrabold">{data.organisationName}</p>
             <p className="text-xs text-center lg:text-left">{data.orgDetails}</p>
-            <SmallSocials socialMedia={data.socialMedia} />
+            <SmallSocials socialMedia={data.socialMedia as SocialMediaAccount[]} />
           </div>
-          <FooterMenu footerNav={data.navigation} />
+          <FooterMenu footerNav={data.navigation as NavMenuProps[]} />
         </div>
         <div className="my-8 w-full">
           <p className="text-sm text-teal-100 text-center lg:text-left">

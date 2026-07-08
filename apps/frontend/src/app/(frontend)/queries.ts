@@ -1,23 +1,17 @@
 import config from '@/payload.config'
 import { getPayload } from 'payload'
+import { cache } from 'react'
 
-export async function getHomeData() {
-  const payload = await getPayload({ config })
-
-  return payload.findGlobal({
-    slug: 'home',
-  })
-}
-
-export async function getFooterData() {
+export const getFooterData = cache(async () => {
   const payload = await getPayload({ config })
 
   return payload.findGlobal({
     slug: 'footer',
+    depth: 2,
   })
-}
+})
 
-export async function getNavbarData() {
+export const getNavbarData = cache(async () => {
   const payload = await getPayload({ config })
 
   return payload.findGlobal({
@@ -34,4 +28,22 @@ export async function getNavbarData() {
       },
     },
   })
-}
+})
+
+export const getHomeData = cache(async () => {
+  const payload = await getPayload({ config })
+
+  return payload.findGlobal({
+    slug: 'home',
+    depth: 2,
+  })
+})
+
+export const getAboutData = cache(async () => {
+  const payload = await getPayload({ config })
+
+  return payload.findGlobal({
+    slug: 'about',
+    depth: 1,
+  })
+})

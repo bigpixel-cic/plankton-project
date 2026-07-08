@@ -1,3 +1,6 @@
+import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
 export function isPopulated<T extends { id: number }>(
   value: number | T | null | undefined,
 ): value is T {
@@ -9,4 +12,8 @@ export function isPopulatedArray<T extends { id: number }>(
 ): T[] {
   if (!values) return []
   return values.filter(isPopulated<T>)
+}
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
 }
