@@ -66,3 +66,12 @@ export const getResources = cache(async () => {
     limit: 12,
   })
 })
+
+export const getContactPage = cache(async () => {
+  const payload = await getPayload({ config })
+
+  return payload.findGlobal({
+    slug: 'contact',
+    depth: 2,
+  })
+})

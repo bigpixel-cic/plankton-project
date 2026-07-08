@@ -1,6 +1,7 @@
 import { getFooter, getNavbar } from '@/app/(frontend)/queries'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
+import { Toaster } from 'sonner'
 import './styles/globals.css'
 
 import { ConsentManager } from '@/components/consent-manager'
@@ -79,6 +80,7 @@ export default async function RootLayout({
       <body className={`${inter.variable} ${nunito.variable} overflow-x-hidden`}>
         <ConsentManager>
           <div className="min-h-screen w-full flex flex-col">
+            <Toaster />
             <NavBar data={navbar} />
             {children}
             <Footer data={footer} />
