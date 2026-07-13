@@ -6,6 +6,8 @@ import { LargeSocials } from '@/components/global/socials'
 import { getContactPage } from '@/app/(frontend)/queries'
 import { isPopulated } from '@/app/lib/payload/utils'
 
+import type { SocialMediaAccount } from '@/payload-types'
+
 export async function generateMetadata(parent: ResolvingMetadata): Promise<Metadata> {
   const seo = await getContactPage()
 
@@ -49,7 +51,7 @@ export default async function ContactPage() {
         <p className="text-lg md:text-xl text-white">{contact.additionalText}</p>
       )}
       <h2 className="subheading">Follow us</h2>
-      <LargeSocials socialMedia={contact.socials} />
+      <LargeSocials socialMedia={contact.socials as SocialMediaAccount[]} />
       <h2 className="subheading">Join us</h2>
       <ContactForm />
     </div>

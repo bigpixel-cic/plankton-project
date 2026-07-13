@@ -3,7 +3,6 @@
 import { FootnoteBlock, YouTubeVideoBlock } from '@/payload-types'
 import type {
   DefaultNodeTypes,
-  SerializedBlockNode,
   SerializedInlineBlockNode,
   SerializedLinkNode,
 } from '@payloadcms/richtext-lexical'
@@ -23,13 +22,14 @@ import YouTube from './blocks/youtube'
 
 type NodeTypes =
   | DefaultNodeTypes
-  | SerializedBlockNode<YouTubeVideoBlock>
+  | SerializedInlineBlockNode<YouTubeVideoBlock>
   | SerializedInlineBlockNode<FootnoteBlock>
 
 type Props = {
   data: SerializedEditorState
   enableGutter?: boolean
   enableProse?: boolean
+  white?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
@@ -46,18 +46,16 @@ const createJsxConverters =
   ({ defaultConverters }) => ({
     ...defaultConverters,
     ...LinkJSXConverter({ internalDocToHref }),
-    blocks: {
-      youTubeVideo: ({ node }) => <YouTube {...node.fields} />,
-    },
     inlineBlocks: {
       footnote: ({ node }) => (
         <FootnoteMarker number={footnoteNumbers.get(node.fields.id ?? '') ?? 0} />
       ),
+      youTubeVideo: ({ node }) => <YouTube url={node.fields.url ?? ''} />,
     },
   })
 
 export default function RichText(props: Props) {
-  const { className, enableProse = true, enableGutter = true, data, ...rest } = props
+  const { className, enableProse = true, white = false, enableGutter = true, data, ...rest } = props
 
   const footnotes = useMemo(() => extractFootnotes(data), [data])
   const jsxConverters = useMemo(() => {
@@ -73,9 +71,9 @@ export default function RichText(props: Props) {
         className={cn(
           'payload-richtext',
           {
-            container: enableGutter,
             'max-w-none': !enableGutter,
-            'mx-auto prose prose-white md:prose-md': enableProse,
+            'mx-auto prose md:prose-md': enableProse,
+            'prose-white': white,
           },
           className,
         )}

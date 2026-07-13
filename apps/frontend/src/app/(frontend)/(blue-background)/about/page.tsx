@@ -58,7 +58,7 @@ export default async function About() {
           )}
         </div>
         <div className="col-span-6 lg:col-span-3 xl:col-span-4">
-          {about.content && <RichText data={about.content} enableProse />}
+          {about.content && <RichText data={about.content} enableProse white />}
         </div>
       </div>
     </div>

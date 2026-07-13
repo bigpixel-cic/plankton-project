@@ -1,3 +1,4 @@
+import { Post as PostType } from '@/payload-types'
 import config from '@/payload.config'
 import { draftMode } from 'next/headers'
 import { getPayload } from 'payload'
@@ -116,7 +117,6 @@ export const getPostSlugs = cache(async () => {
   return payload.find({
     collection: 'posts',
     draft: false,
-    limit: 20,
     overrideAccess: false,
     pagination: false,
     select: {
@@ -133,20 +133,32 @@ export const getPostBySlug = cache(async (slug: string) => {
     collection: 'posts',
     draft,
     limit: 1,
+    depth: 2,
     pagination: false,
-    overrideAccess: draft,
     where: {
       slug: {
         equals: slug,
       },
+    },
+    select: {
+      title: true,
+      slug: true,
+      date: true,
+      author: true,
+      category: true,
+      tags: true,
+      coverImage: true,
+      content: true,
     },
     populate: {
       users: {
         firstName: true,
         lastName: true,
       },
+      categories: { name: true },
+      tags: { name: true },
     },
   })
 
-  return result.docs?.[0] || null
+  return result.docs?.[0] as null | PostType
 })

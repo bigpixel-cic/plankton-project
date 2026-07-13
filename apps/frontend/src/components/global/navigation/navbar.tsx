@@ -7,6 +7,7 @@ import { useState } from 'react'
 
 import { DesktopMenu, MobileMenu } from '@/components/global/navigation/nav-menu'
 import { Menu, X } from 'lucide-react'
+import Greeting from './user'
 
 import type { Navigation } from '@/payload-types'
 import type { NavMenuProps } from './nav-menu'
@@ -45,12 +46,7 @@ export default function NavBar({ data }: { data: Navigation }) {
         </div>
         <DesktopMenu mainNav={data.navigation as NavMenuProps[]} />
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          {/* <Link
-            href="#"
-            className="text-sm/6 font-semibold text-teal-100 hover:text-white transition-colors ease-out duration-200"
-          >
-            Log in <span aria-hidden="true">&rarr;</span>
-          </Link> */}
+          <Greeting />
         </div>
       </nav>
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
@@ -80,14 +76,9 @@ export default function NavBar({ data }: { data: Navigation }) {
             mainNav={data.navigation as NavMenuProps[]}
             onClick={() => setMobileMenuOpen(false)}
           />
-          {/* <div className="py-6">
-            <Link
-              href="#"
-              className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-slate-900 hover:bg-teal-50 dark:text-white dark:hover:bg-white/5"
-            >
-              Log in
-            </Link>
-          </div> */}
+          <div className="py-6">
+            <Greeting />
+          </div>
         </DialogPanel>
       </Dialog>
     </header>

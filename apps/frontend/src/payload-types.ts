@@ -202,6 +202,10 @@ export interface User {
   firstName?: string | null;
   lastName?: string | null;
   picture?: (number | null) | Media;
+  /**
+   * Set the access the user has by defining a role.
+   */
+  roles?: ('admin' | 'editor' | 'user')[] | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -558,6 +562,7 @@ export interface UsersSelect<T extends boolean = true> {
   firstName?: T;
   lastName?: T;
   picture?: T;
+  roles?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;

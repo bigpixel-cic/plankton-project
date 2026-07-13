@@ -1,44 +1,24 @@
-import { CoverImage } from '@/components/global/cover-image'
-import config from '@/payload.config'
-import type { Metadata, ResolvingMetadata } from 'next'
-import { notFound } from 'next/navigation'
-import { getPayload } from 'payload'
-
 import { isPopulated } from '@/app/lib/payload/utils'
-
-import { getPostBySlug } from '@/app/(frontend)/queries'
-
 import InfoBlock from '@/components/blog/info-block'
+import { CoverImage } from '@/components/global/cover-image'
 import RichText from '@/components/global/richtext'
+import { notFound } from 'next/navigation'
+
+import { getPostBySlug, getPostSlugs } from '@/app/(frontend)/queries'
+
+import type { Metadata, ResolvingMetadata } from 'next'
 
 type Props = {
   params: Promise<{ slug: string }>
 }
 
 export async function generateStaticParams() {
-  const payload = await getPayload({ config })
-
-  const posts = await payload.find({
-    collection: 'posts',
-    draft: false,
-    limit: 20,
-    overrideAccess: false,
-    pagination: false,
-    select: {
-      slug: true,
-    },
-  })
-
-  const params = posts.docs.map(({ slug }) => {
+  const data = await getPostSlugs()
+  const params = data.docs?.map(({ slug }) => {
     return { slug }
   })
-  return params
-}
 
-type Args = {
-  params: Promise<{
-    slug?: string
-  }>
+  return params || []
 }
 
 export async function generateMetadata(props: Props, parent: ResolvingMetadata): Promise<Metadata> {
@@ -67,12 +47,9 @@ export async function generateMetadata(props: Props, parent: ResolvingMetadata):
   } satisfies Metadata
 }
 
-export default async function PostPage({ params: paramsPromise }: Args) {
-  const { slug = '' } = await paramsPromise
-
-  const decodedSlug = decodeURIComponent(slug)
-  const post = await getPostBySlug(decodedSlug)
-
+export default async function PostPage(props: Props) {
+  const params = await props.params
+  const post = await getPostBySlug(params.slug)
   if (!post || !post.id) {
     return notFound()
   }
@@ -92,7 +69,7 @@ export default async function PostPage({ params: paramsPromise }: Args) {
           <h1 className="text-wrap text-4xl md:text-6xl text-slate-900 dark:text-white font-extrabold mb-6 md:mb-9">
             {post.title}
           </h1>
-          {post.content && <RichText data={post.content} enableProse />}
+          {post.content && <RichText data={post.content} enableProse enableGutter={false} />}
         </div>
       </div>
     </div>

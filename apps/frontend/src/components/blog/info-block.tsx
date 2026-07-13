@@ -55,13 +55,11 @@ export default function InfoBlock({ post }: { post: Post }) {
       <div className="flex flex-col divide-slate-300 divide-y">
         <p className="flex items-center gap-x-3 py-3 font-medium text-sm">
           <UserPen size={18} className="text-sky-600" />
-          {isPopulated(post.author)
-            ? `${post.author.firstName} ${post.author.lastName}`
-            : 'Unknown Author'}
+          {isPopulated(post.author) && `${post.author.firstName} ${post.author.lastName}`}
         </p>
         <p className="flex items-center gap-x-3 py-3 font-medium text-sm">
           <CalendarDays size={18} className="text-sky-600" />
-          {post.createdAt ? format(new Date(post.createdAt), 'do MMM yyyy') : 'Unknown Date'}
+          {post.date ? format(new Date(post.date), 'do MMM yyyy') : 'Unknown Date'}
         </p>
         <div className="flex items-center gap-x-3 py-3">
           <Tags size={18} className="text-sky-600" />

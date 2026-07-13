@@ -18,7 +18,7 @@ export default async function Resources() {
     <div className="flex flex-col gap-y-6 sm:gap-y-9 md:gap-y-12">
       <h1 className="heading">{data.heading}</h1>
       <p className="subheading">{data.subheading}</p>
-      {data.introText && <RichText data={data.introText} enableProse />}
+      {data.introText && <RichText data={data.introText} enableProse white />}
       <ResourceList />
     </div>
   )

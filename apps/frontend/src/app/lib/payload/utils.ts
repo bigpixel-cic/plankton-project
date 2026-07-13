@@ -1,6 +1,8 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
+import type { User } from '@/payload-types'
+
 export function isPopulated<T extends { id: number }>(
   value: number | T | null | undefined,
 ): value is T {
@@ -16,4 +18,19 @@ export function isPopulatedArray<T extends { id: number }>(
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
+}
+
+export function checkRole(allRoles: User['roles'] = [], user: User) {
+  if (user) {
+    if (
+      allRoles?.some((role) => {
+        return user?.roles?.some((individualRole) => {
+          return individualRole === role
+        })
+      })
+    ) {
+      return true
+    }
+  }
+  return false
 }

@@ -18,7 +18,7 @@ export function FootnoteReferences({ footnotes }: { footnotes: FootnoteEntry[] }
       <ol className="space-y-2">
         {footnotes.map((footnote) => (
           <li key={footnote.id} id={`fn-${footnote.number}`}>
-            <span className="mr-1 text-teal-200">{footnote.number}.</span>
+            <span className="mr-1.5 text-slate-400 text-balance">{footnote.number}.</span>
             {footnote.text}{' '}
             <a
               href={`#fnref-${footnote.number}`}

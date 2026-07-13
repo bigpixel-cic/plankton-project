@@ -3,10 +3,17 @@ import type { CollectionConfig } from 'payload'
 import { slugField } from 'payload'
 
 import { Footnote, YouTubeVideo } from '../blocks'
+import { admin, anyone, editor } from './users/access'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
   admin: { useAsTitle: 'title' },
+  access: {
+    create: editor,
+    read: anyone,
+    update: editor,
+    delete: admin,
+  },
   fields: [
     { name: 'title', type: 'text', required: true },
     slugField(),
