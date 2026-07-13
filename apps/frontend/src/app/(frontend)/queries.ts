@@ -1,8 +1,16 @@
 import { Post as PostType } from '@/payload-types'
 import config from '@/payload.config'
-import { draftMode } from 'next/headers'
+import { draftMode, headers as getHeaders } from 'next/headers'
 import { getPayload } from 'payload'
 import { cache } from 'react'
+
+export const getUser = cache(async () => {
+  const headers = await getHeaders()
+  const payload = await getPayload({ config })
+  const { user } = await payload.auth({ headers })
+
+  return user
+})
 
 export const getFooter = cache(async () => {
   const payload = await getPayload({ config })

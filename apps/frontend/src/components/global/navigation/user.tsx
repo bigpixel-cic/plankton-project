@@ -1,11 +1,11 @@
-'use client'
 import type { User } from '@/payload-types'
-import { useAuth } from '@payloadcms/ui'
+import Link from 'next/link'
 
-const Greeting: React.FC = () => {
-  const { user } = useAuth<User>()
-
-  return <span>Hi, {user?.email}!</span>
+export default function Greeting({ user }: { user: User }) {
+  if (!user) return null
+  return (
+    <Link href="/admin" className="font-semibold text-teal-100 hover:text-teal-50">
+      Admin
+    </Link>
+  )
 }
-
-export default Greeting

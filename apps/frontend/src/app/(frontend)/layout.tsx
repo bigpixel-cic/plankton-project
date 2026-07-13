@@ -1,4 +1,4 @@
-import { getFooter, getNavbar } from '@/app/(frontend)/queries'
+import { getFooter, getNavbar, getUser } from '@/app/(frontend)/queries'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import { Toaster } from 'sonner'
@@ -70,7 +70,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const [navbar, footer] = await Promise.all([getNavbar(), getFooter()])
+  const [navbar, footer, user] = await Promise.all([getNavbar(), getFooter(), getUser()])
 
   return (
     <html lang="en">
@@ -81,7 +81,7 @@ export default async function RootLayout({
         <ConsentManager>
           <div className="min-h-screen w-full flex flex-col">
             <Toaster />
-            <NavBar data={navbar} />
+            <NavBar data={navbar} user={user} />
             {children}
             <Footer data={footer} />
           </div>

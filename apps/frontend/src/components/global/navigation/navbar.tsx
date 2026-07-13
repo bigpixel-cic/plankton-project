@@ -9,10 +9,10 @@ import { DesktopMenu, MobileMenu } from '@/components/global/navigation/nav-menu
 import { Menu, X } from 'lucide-react'
 import Greeting from './user'
 
-import type { Navigation } from '@/payload-types'
+import type { Navigation, User } from '@/payload-types'
 import type { NavMenuProps } from './nav-menu'
 
-export default function NavBar({ data }: { data: Navigation }) {
+export default function NavBar({ data, user }: { data: Navigation; user: User }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
@@ -46,7 +46,7 @@ export default function NavBar({ data }: { data: Navigation }) {
         </div>
         <DesktopMenu mainNav={data.navigation as NavMenuProps[]} />
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <Greeting />
+          <Greeting user={user} />
         </div>
       </nav>
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
